@@ -1,7 +1,7 @@
 variable "tempo_image" {
   type        = string
   description = "Grafana Docker image to use"
-  default     = "grafana/tempo:latest"
+  default     = "philipslabs/cf-tempo:latest"
 }
 variable "cf_org" {
   type        = string
@@ -18,6 +18,7 @@ variable "cf_domain" {
 variable "name_postfix" {
   type        = string
   description = "The postfix string to append to the hostname, prevents namespace clashes"
+  default = ""
 }
 variable "environment" {
   type        = map(any)
@@ -57,5 +58,5 @@ variable "memory" {
 variable "disk" {
   type        = number
   description = "The amount of Disk space to allocate for Grafana Tempo (MB)"
-  default     = 1024
+  default     = 4096
 }

@@ -21,9 +21,24 @@ resource "cloudfoundry_app" "tempo" {
   disk_quota   = var.disk
   docker_image = var.tempo_image
   environment = merge({}, var.environment)
+  command = "/tempo -config.file=/etc/tempo.yaml"
 
   routes {
     route = cloudfoundry_route.tempo.id
+  }
+}
+
+resource "cloudfoundry_app" "tempo_query" {
+  name = "tempo-query"
+  space        = data.cloudfoundry_space.space.id
+  memory       = var.memory
+  disk_quota   = var.disk
+  docker_image = var.tempo_image
+  environment = merge({}, var.environment)
+  command = "/tempo -config.file=/etc/tempo.yaml"
+
+  routes {
+    route = cloudfoundry_route.tempo_query.id
   }
 }
 
@@ -31,6 +46,12 @@ resource "cloudfoundry_route" "tempo" {
   domain   = data.cloudfoundry_domain.domain.id
   space    = data.cloudfoundry_space.space.id
   hostname = var.name_postfix == "" ? "tempo" : "tempo-${var.name_postfix}"
+}
+
+resource "cloudfoundry_route" "tempo_query" {
+  domain   = data.cloudfoundry_domain.domain.id
+  space    = data.cloudfoundry_space.space.id
+  hostname = var.name_postfix == "" ? "tempo-query" : "tempo-query-${var.name_postfix}"
 }
 
 resource "cloudfoundry_network_policy" "tempo" {
