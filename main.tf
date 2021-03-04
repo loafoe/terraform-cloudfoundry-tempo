@@ -6,8 +6,8 @@ data "cloudfoundry_space" "space" {
   name = var.cf_space
 }
 
-data "cloudfoundry_service" "rds" {
-  name = var.db_broker
+data "cloudfoundry_service" "s3" {
+  name = var.s3_broker_settings.service_broker
 }
 
 data "cloudfoundry_domain" "domain" {
@@ -20,7 +20,7 @@ resource "cloudfoundry_app" "tempo" {
   memory       = var.memory
   disk_quota   = var.disk
   docker_image = var.tempo_image
-  environment = merge({}, var.enviroment)
+  environment = merge({}, var.environment)
 
   routes {
     route = cloudfoundry_route.tempo.id

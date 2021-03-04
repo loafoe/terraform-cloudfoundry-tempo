@@ -25,6 +25,19 @@ variable "environment" {
   default     = {}
 }
 
+variable "s3_broker_settings" {
+  type = object({
+    service_broker = string
+    service_plan = string
+  })
+  default = {
+    service_broker = "hsdp-s3"
+    service_plan = "s3_bucket"
+  }
+  description = "The S3 service broker to use"
+}
+
+
 variable "network_policies" {
   description = "The container-to-container network policies to create with Grafana as the source app"
   type = list(object({
