@@ -14,6 +14,10 @@ data "cloudfoundry_domain" "domain" {
   name = var.cf_domain
 }
 
+data "cloudfoundry_domain" "internal" {
+  name = "apps.internal"
+}
+
 resource "cloudfoundry_app" "tempo" {
   name         = "tempo"
   space        = data.cloudfoundry_space.space.id
@@ -26,6 +30,9 @@ resource "cloudfoundry_app" "tempo" {
   routes {
     route = cloudfoundry_route.tempo.id
   }
+  routes {
+    route = cloudfoundry_route.tempo_internal.id
+  }
 }
 
 resource "cloudfoundry_app" "tempo_query" {
@@ -33,9 +40,9 @@ resource "cloudfoundry_app" "tempo_query" {
   space        = data.cloudfoundry_space.space.id
   memory       = var.memory
   disk_quota   = var.disk
-  docker_image = var.tempo_image
+  docker_image = var.tempo_query_image
   environment = merge({}, var.environment)
-  command = "/tempo -config.file=/etc/tempo.yaml"
+  command = "/go/bin/query-linux --grpc-storage-plugin.configuration-file=/etc/tempo-query.yaml"
 
   routes {
     route = cloudfoundry_route.tempo_query.id
@@ -48,10 +55,24 @@ resource "cloudfoundry_route" "tempo" {
   hostname = var.name_postfix == "" ? "tempo" : "tempo-${var.name_postfix}"
 }
 
+resource "cloudfoundry_route" "tempo_internal" {
+  domain = data.cloudfoundry_domain.internal.id
+  space = data.cloudfoundry_space.space.id
+  hostname = var.name_postfix == "" ? "tempo" : "tempo-${var.name_postfix}"
+}
+
 resource "cloudfoundry_route" "tempo_query" {
   domain   = data.cloudfoundry_domain.domain.id
   space    = data.cloudfoundry_space.space.id
   hostname = var.name_postfix == "" ? "tempo-query" : "tempo-query-${var.name_postfix}"
+}
+
+resource "cloudfoundry_network_policy" "tempo_query" {
+  policy {
+    source_app      = cloudfoundry_app.tempo_query.id
+    destination_app = cloudfoundry_app.tempo.id
+    port            = "3100"
+  }
 }
 
 resource "cloudfoundry_network_policy" "tempo" {

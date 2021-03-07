@@ -1,7 +1,12 @@
 variable "tempo_image" {
   type        = string
-  description = "Grafana Docker image to use"
+  description = "Tempo Docker image to use"
   default     = "philipslabs/cf-tempo:latest"
+}
+variable "tempo_query_image" {
+  type        = string
+  description = "Tempo Query Docker image to use"
+  default     = "philipslabs/cf-tempo-query:latest"
 }
 variable "cf_org" {
   type        = string
