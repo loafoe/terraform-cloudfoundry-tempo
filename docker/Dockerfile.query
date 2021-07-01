@@ -1,3 +1,0 @@
-FROM grafana/tempo-query:latest
-COPY tempo-query.yaml /etc/tempo-query.yaml
-EXPOSE 16686
