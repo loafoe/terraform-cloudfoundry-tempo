@@ -1,9 +1,9 @@
-data "cloudfoundry_org" "org" {
-  name = var.cf_org
+locals {
+  postfix       = var.name_postfix != "" ? var.name_postfix : random_id.id.hex
 }
-data "cloudfoundry_space" "space" {
-  org  = data.cloudfoundry_org.org.id
-  name = var.cf_space
+
+resource "random_id" "id" {
+  byte_length = 8
 }
 
 data "cloudfoundry_service" "s3" {
@@ -20,12 +20,11 @@ data "cloudfoundry_domain" "internal" {
 
 resource "cloudfoundry_app" "tempo" {
   name         = "tempo"
-  space        = data.cloudfoundry_space.space.id
+  space        = var.cf_space_id
   memory       = var.memory
   disk_quota   = var.disk
   docker_image = var.tempo_image
-  environment = merge({}, var.environment)
-  command = "/tempo -config.file=/etc/tempo.yaml"
+  environment  = merge({}, var.environment)
 
   routes {
     route = cloudfoundry_route.tempo.id
@@ -33,46 +32,22 @@ resource "cloudfoundry_app" "tempo" {
   routes {
     route = cloudfoundry_route.tempo_internal.id
   }
-}
 
-resource "cloudfoundry_app" "tempo_query" {
-  name = "tempo-query"
-  space        = data.cloudfoundry_space.space.id
-  memory       = var.memory
-  disk_quota   = var.disk
-  docker_image = var.tempo_query_image
-  environment = merge({}, var.environment)
-  command = "/go/bin/query-linux --grpc-storage-plugin.configuration-file=/etc/tempo-query.yaml"
-
-  routes {
-    route = cloudfoundry_route.tempo_query.id
+  service_binding {
+    service_instance = cloudfoundry_service_instance.s3.id
   }
 }
 
 resource "cloudfoundry_route" "tempo" {
   domain   = data.cloudfoundry_domain.domain.id
-  space    = data.cloudfoundry_space.space.id
-  hostname = var.name_postfix == "" ? "tempo" : "tempo-${var.name_postfix}"
+  space    = var.cf_space_id
+  hostname = "tempo-${local.postfix}"
 }
 
 resource "cloudfoundry_route" "tempo_internal" {
-  domain = data.cloudfoundry_domain.internal.id
-  space = data.cloudfoundry_space.space.id
-  hostname = var.name_postfix == "" ? "tempo" : "tempo-${var.name_postfix}"
-}
-
-resource "cloudfoundry_route" "tempo_query" {
-  domain   = data.cloudfoundry_domain.domain.id
-  space    = data.cloudfoundry_space.space.id
-  hostname = var.name_postfix == "" ? "tempo-query" : "tempo-query-${var.name_postfix}"
-}
-
-resource "cloudfoundry_network_policy" "tempo_query" {
-  policy {
-    source_app      = cloudfoundry_app.tempo_query.id
-    destination_app = cloudfoundry_app.tempo.id
-    port            = "3100"
-  }
+  domain   = data.cloudfoundry_domain.internal.id
+  space    = var.cf_space_id
+  hostname = "tempo-${local.postfix}"
 }
 
 resource "cloudfoundry_network_policy" "tempo" {

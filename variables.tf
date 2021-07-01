@@ -3,16 +3,8 @@ variable "tempo_image" {
   description = "Tempo Docker image to use"
   default     = "philipslabs/cf-tempo:latest"
 }
-variable "tempo_query_image" {
-  type        = string
-  description = "Tempo Query Docker image to use"
-  default     = "philipslabs/cf-tempo-query:latest"
-}
-variable "cf_org" {
-  type        = string
-  description = "The CF Org to deploy under"
-}
-variable "cf_space" {
+
+variable "cf_space_id" {
   type        = string
   description = "The CF Space to deploy in"
 }
@@ -23,7 +15,7 @@ variable "cf_domain" {
 variable "name_postfix" {
   type        = string
   description = "The postfix string to append to the hostname, prevents namespace clashes"
-  default = ""
+  default     = ""
 }
 variable "environment" {
   type        = map(any)
@@ -34,11 +26,11 @@ variable "environment" {
 variable "s3_broker_settings" {
   type = object({
     service_broker = string
-    service_plan = string
+    service_plan   = string
   })
   default = {
     service_broker = "hsdp-s3"
-    service_plan = "s3_bucket"
+    service_plan   = "s3_bucket"
   }
   description = "The S3 service broker to use"
 }
@@ -63,5 +55,5 @@ variable "memory" {
 variable "disk" {
   type        = number
   description = "The amount of Disk space to allocate for Grafana Tempo (MB)"
-  default     = 4096
+  default     = 4980
 }
