@@ -1,5 +1,5 @@
 locals {
-  postfix       = var.name_postfix != "" ? var.name_postfix : random_id.id.hex
+  postfix = var.name_postfix != "" ? var.name_postfix : random_id.id.hex
 }
 
 resource "random_id" "id" {
@@ -19,35 +19,47 @@ data "cloudfoundry_domain" "internal" {
 }
 
 resource "cloudfoundry_app" "tempo" {
-  name         = "tempo"
+  name         = "tf-tempo-${local.postfix}"
   space        = var.cf_space_id
   memory       = var.memory
   disk_quota   = var.disk
   docker_image = var.tempo_image
   environment  = merge({}, var.environment)
 
+  //noinspection HCLUnknownBlockType
   routes {
     route = cloudfoundry_route.tempo.id
   }
+  //noinspection HCLUnknownBlockType
   routes {
     route = cloudfoundry_route.tempo_internal.id
   }
 
+  //noinspection HCLUnknownBlockType
   service_binding {
     service_instance = cloudfoundry_service_instance.s3.id
+  }
+
+  labels = {
+    "variant.tva/exporter" = true,
+  }
+  annotations = {
+    "prometheus.exporter.type" = "tempo_exporter"
+    "prometheus.exporter.port" = "3100"
+    "prometheus.exporter.path" = "/metrics"
   }
 }
 
 resource "cloudfoundry_route" "tempo" {
   domain   = data.cloudfoundry_domain.domain.id
   space    = var.cf_space_id
-  hostname = "tempo-${local.postfix}"
+  hostname = "tf-tempo-${local.postfix}"
 }
 
 resource "cloudfoundry_route" "tempo_internal" {
   domain   = data.cloudfoundry_domain.internal.id
   space    = var.cf_space_id
-  hostname = "tempo-${local.postfix}"
+  hostname = "tf-tempo-${local.postfix}"
 }
 
 resource "cloudfoundry_network_policy" "tempo" {
@@ -55,8 +67,11 @@ resource "cloudfoundry_network_policy" "tempo" {
 
   dynamic "policy" {
     for_each = [for p in var.network_policies : {
+      //noinspection HILUnresolvedReference
       destination_app = p.destination_app
+      //noinspection HILUnresolvedReference
       port            = p.port
+      //noinspection HILUnresolvedReference
       protocol        = p.protocol
     }]
     content {
