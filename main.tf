@@ -70,9 +70,9 @@ resource "cloudfoundry_network_policy" "tempo" {
       //noinspection HILUnresolvedReference
       destination_app = p.destination_app
       //noinspection HILUnresolvedReference
-      port            = p.port
+      port = p.port
       //noinspection HILUnresolvedReference
-      protocol        = p.protocol
+      protocol = p.protocol
     }]
     content {
       source_app      = cloudfoundry_app.tempo.id
