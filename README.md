@@ -61,6 +61,7 @@ No modules.
 |------|-------------|
 | <a name="output_tempo_endpoint"></a> [tempo\_endpoint](#output\_tempo\_endpoint) | The endpoint where Tempo is reachable on |
 | <a name="output_tempo_id"></a> [tempo\_id](#output\_tempo\_id) | The Tempo apps' id |
+| <a name="output_tempo_internal_endpoint"></a> [tempo\_internal\_endpoint](#output\_tempo\_internal\_endpoint) | The internal endpoint where Tempo is reachable on |
 
 <!--- END_TF_DOCS --->
 
