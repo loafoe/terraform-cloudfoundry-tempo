@@ -43,7 +43,7 @@ jobs:
           file: ./docker/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: philipslabs/cf-tempo:latest,docker.na1.hsdp.io/philipslabs/cf-tempo:latest
+          tags: loafoe/cf-tempo:latest,docker.na1.hsdp.io/loafoe/cf-tempo:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

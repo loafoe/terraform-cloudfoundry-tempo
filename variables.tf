@@ -1,7 +1,7 @@
 variable "tempo_image" {
   type        = string
   description = "Tempo Docker image to use"
-  default     = "philipslabs/cf-tempo:latest"
+  default     = "loafoe/cf-tempo:latest"
 }
 
 variable "cf_space_id" {
