@@ -53,7 +53,7 @@ No modules.
 | <a name="input_name_postfix"></a> [name\_postfix](#input\_name\_postfix) | The postfix string to append to the hostname, prevents namespace clashes | `string` | `""` | no |
 | <a name="input_network_policies"></a> [network\_policies](#input\_network\_policies) | The container-to-container network policies to create with Grafana as the source app | <pre>list(object({<br>    destination_app = string<br>    protocol        = string<br>    port            = string<br>  }))</pre> | `[]` | no |
 | <a name="input_s3_broker_settings"></a> [s3\_broker\_settings](#input\_s3\_broker\_settings) | The S3 service broker to use | <pre>object({<br>    service_broker = string<br>    service_plan   = string<br>  })</pre> | <pre>{<br>  "service_broker": "hsdp-s3",<br>  "service_plan": "s3_bucket"<br>}</pre> | no |
-| <a name="input_tempo_image"></a> [tempo\_image](#input\_tempo\_image) | Tempo Docker image to use | `string` | `"philipslabs/cf-tempo:latest"` | no |
+| <a name="input_tempo_image"></a> [tempo\_image](#input\_tempo\_image) | Tempo Docker image to use | `string` | `"loafoe/cf-tempo:latest"` | no |
 
 ## Outputs
 
