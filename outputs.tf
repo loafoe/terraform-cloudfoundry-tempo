@@ -8,7 +8,7 @@ output "tempo_internal_endpoint" {
   value       = cloudfoundry_route.tempo_internal.endpoint
 }
 
-output "tempo_id" {
+output "tempo_app_id" {
   description = "The Tempo apps' id"
   value       = cloudfoundry_app.tempo.id
 }
