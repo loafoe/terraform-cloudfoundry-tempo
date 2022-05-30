@@ -46,14 +46,6 @@ resource "cloudfoundry_app" "tempo" {
   }
 }
 
-resource "cloudfoundry_route" "tempo" {
-  count = var.enable_public_proxy ? 1 : 0
-
-  domain   = data.cloudfoundry_domain.domain.id
-  space    = var.cf_space_id
-  hostname = "tf-tempo-${local.postfix}"
-}
-
 resource "cloudfoundry_route" "tempo_internal" {
   domain   = data.cloudfoundry_domain.internal.id
   space    = var.cf_space_id
