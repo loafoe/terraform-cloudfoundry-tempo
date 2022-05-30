@@ -1,6 +1,18 @@
-output "tempo_endpoint" {
+output "tempo_proxy_endpoint" {
   description = "The endpoint where Tempo is reachable on"
-  value       = cloudfoundry_route.tempo.endpoint
+  value       = module.proxy.*.proxy_endpoint
+}
+
+output "tempo_proxy_username" {
+  description = "The endpoint where Tempo is reachable on"
+  value       = module.proxy.*.proxy_username
+  sensitive   = true
+}
+
+output "tempo_proxy_password" {
+  description = "The endpoint where Tempo is reachable on"
+  value       = module.proxy.*.proxy_password
+  sensitive   = true
 }
 
 output "tempo_internal_endpoint" {

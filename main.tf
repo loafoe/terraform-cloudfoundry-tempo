@@ -28,10 +28,6 @@ resource "cloudfoundry_app" "tempo" {
 
   //noinspection HCLUnknownBlockType
   routes {
-    route = cloudfoundry_route.tempo.id
-  }
-  //noinspection HCLUnknownBlockType
-  routes {
     route = cloudfoundry_route.tempo_internal.id
   }
 
@@ -51,6 +47,8 @@ resource "cloudfoundry_app" "tempo" {
 }
 
 resource "cloudfoundry_route" "tempo" {
+  count = var.enable_public_proxy ? 1 : 0
+
   domain   = data.cloudfoundry_domain.domain.id
   space    = var.cf_space_id
   hostname = "tf-tempo-${local.postfix}"
@@ -81,4 +79,16 @@ resource "cloudfoundry_network_policy" "tempo" {
       port            = policy.value.port
     }
   }
+}
+
+module "proxy" {
+  count  = var.enable_public_proxy ? 1 : 0
+  source = "./modules/proxy"
+
+
+  tempo_app_id            = cloudfoundry_app.tempo.id
+  tempo_internal_endpoint = cloudfoundry_route.tempo_internal.endpoint
+  name_postfix            = local.postfix
+  cf_domain               = var.cf_domain
+  cf_space_id             = var.cf_space_id
 }

@@ -57,3 +57,9 @@ variable "disk" {
   description = "The amount of Disk space to allocate for Grafana Tempo (MB)"
   default     = 4980
 }
+
+variable "enable_public_proxy" {
+  type        = bool
+  description = "Enables an authenticated public proxy endpoint"
+  default     = false
+}
