@@ -90,7 +90,9 @@ Please post your questions on the HSDP Slack `#terraform` channel
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_proxy"></a> [proxy](#module\_proxy) | ./modules/proxy | n/a |
 
 ## Resources
 
@@ -113,6 +115,7 @@ No modules.
 | <a name="input_cf_domain"></a> [cf\_domain](#input\_cf\_domain) | The CF domain to use for Grafana | `string` | n/a | yes |
 | <a name="input_cf_space_id"></a> [cf\_space\_id](#input\_cf\_space\_id) | The CF Space to deploy in | `string` | n/a | yes |
 | <a name="input_disk"></a> [disk](#input\_disk) | The amount of Disk space to allocate for Grafana Tempo (MB) | `number` | `4980` | no |
+| <a name="input_enable_public_proxy"></a> [enable\_public\_proxy](#input\_enable\_public\_proxy) | Enables an authenticated public proxy endpoint | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment variables for Grafana Tempo | `map(any)` | `{}` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | The amount of RAM to allocate for Grafana (MB) | `number` | `512` | no |
 | <a name="input_name_postfix"></a> [name\_postfix](#input\_name\_postfix) | The postfix string to append to the hostname, prevents namespace clashes | `string` | `""` | no |
@@ -125,6 +128,8 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_tempo_app_id"></a> [tempo\_app\_id](#output\_tempo\_app\_id) | The Tempo apps' id |
-| <a name="output_tempo_endpoint"></a> [tempo\_endpoint](#output\_tempo\_endpoint) | The endpoint where Tempo is reachable on |
 | <a name="output_tempo_internal_endpoint"></a> [tempo\_internal\_endpoint](#output\_tempo\_internal\_endpoint) | The internal endpoint where Tempo is reachable on |
+| <a name="output_tempo_proxy_endpoint"></a> [tempo\_proxy\_endpoint](#output\_tempo\_proxy\_endpoint) | The endpoint where Tempo is reachable on |
+| <a name="output_tempo_proxy_password"></a> [tempo\_proxy\_password](#output\_tempo\_proxy\_password) | The endpoint where Tempo is reachable on |
+| <a name="output_tempo_proxy_username"></a> [tempo\_proxy\_username](#output\_tempo\_proxy\_username) | The endpoint where Tempo is reachable on |
 <!-- END_TF_DOCS -->
