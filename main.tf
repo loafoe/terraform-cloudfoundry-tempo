@@ -25,6 +25,7 @@ resource "cloudfoundry_app" "tempo" {
   disk_quota   = var.disk
   docker_image = var.tempo_image
   environment  = merge({}, var.environment)
+  strategy     = var.strategy
 
   //noinspection HCLUnknownBlockType
   routes {

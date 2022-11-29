@@ -58,6 +58,12 @@ variable "disk" {
   default     = 4980
 }
 
+variable "strategy" {
+  type        = string
+  description = "The deployment strategy to use"
+  default     = "rolling"
+}
+
 variable "enable_public_proxy" {
   type        = bool
   description = "Enables an authenticated public proxy endpoint"
