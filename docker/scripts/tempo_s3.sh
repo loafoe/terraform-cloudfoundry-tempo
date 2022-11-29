@@ -8,10 +8,22 @@ S3_SECRET_KEY=$(echo $VCAP_SERVICES | jq -r '.["hsdp-s3"][0]'.credentials.secret
 S3_URI=$(echo $VCAP_SERVICES | jq -r '.["hsdp-s3"][0]'.credentials.uri)
 
 cat <<EOF > /sidecars/etc/tempo.yaml
+search_enabled: true
+
 auth_enabled: false
 
 server:
   http_listen_port: 3100
+
+query_frontend:
+  # When increasing concurrent_jobs, also increase the queue size per tenant,
+  # or search requests will be cause 429 errors.
+  max_outstanding_per_tenant: 200
+
+  search:
+    # At larger scales, increase the number of jobs attempted simultaneously,
+    # per search query.
+    concurrent_jobs: 200
 
 distributor:
   receivers:                           # this configuration will listen on all ports and protocols that tempo is capable of.
@@ -39,6 +51,10 @@ compactor:
     max_block_bytes: 100_000_000        # maximum size of compacted blocks
     block_retention: 1h
     compacted_block_retention: 10m
+
+querier:
+  # Greatly increase the amount of work each querier will attempt
+  max_concurrent_queries: 20
 
 storage:
   trace:
