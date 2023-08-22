@@ -8,7 +8,6 @@ S3_SECRET_KEY=$(echo $VCAP_SERVICES | jq -r '.["hsdp-s3"][0]'.credentials.secret
 S3_URI=$(echo $VCAP_SERVICES | jq -r '.["hsdp-s3"][0]'.credentials.uri)
 
 cat <<EOF > /sidecars/etc/tempo.yaml
-search_enabled: true
 
 auth_enabled: false
 
@@ -61,11 +60,8 @@ storage:
     backend: s3                        # backend configuration to use
     block:
       bloom_filter_false_positive: .05 # bloom filter false positive rate.  lower values create larger filters but fewer false positives
-      index_downsample_bytes: 1000     # number of bytes per index record
-      encoding: zstd                   # block encoding/compression.  options: none, gzip, lz4-64k, lz4-256k, lz4-1M, lz4, snappy, zstd
     wal:
       path: /tmp/tempo/wal             # where to store the the wal locally
-      encoding: none                   # wal encoding/compression.  options: none, gzip, lz4-64k, lz4-256k, lz4-1M, lz4, snappy, zstd
     s3:
       bucket: "${S3_BUCKET}"                    # how to store data in s3
       endpoint: "${S3_ENDPOINT}"
