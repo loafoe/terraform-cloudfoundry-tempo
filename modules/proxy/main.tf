@@ -29,6 +29,7 @@ resource "cloudfoundry_app" "tempo_proxy" {
       upstream_url = "http://${var.tempo_internal_endpoint}:3100"
       username     = "tempo"
       password     = base64encode(htpasswd_password.hash.bcrypt)
+      enable_auth  = !var.disable_auth
     }))
   }, {})
 

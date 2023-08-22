@@ -84,4 +84,5 @@ module "proxy" {
   name_postfix            = local.postfix
   cf_domain               = var.cf_domain
   cf_space_id             = var.cf_space_id
+  disable_auth            = var.disable_proxy_auth
 }

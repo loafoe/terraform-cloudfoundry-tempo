@@ -51,3 +51,9 @@ variable "caddy_image" {
   description = "Caddy server image to use"
   default     = "library/caddy:2.4.5"
 }
+
+variable "disable_auth" {
+  type        = bool
+  description = "Disable auth"
+  default     = false
+}

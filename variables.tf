@@ -69,3 +69,9 @@ variable "enable_public_proxy" {
   description = "Enables an authenticated public proxy endpoint"
   default     = false
 }
+
+variable "disable_proxy_auth" {
+  type        = bool
+  description = "Disables authentication on the proxy. Only enable this if you know what you are doing"
+  default     = false
+}

@@ -1,6 +1,9 @@
 :80 {
   reverse_proxy ${upstream_url}
+  
+  %{ if enable_auth == true }
   basicauth {
         ${username} ${password}
-    }
+  }
+  %{ endif }
 }
