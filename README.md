@@ -47,6 +47,7 @@ Checkout the example in [examples/default](./examples/default)
 |------|-------------|------|---------|:--------:|
 | <a name="input_cf_domain"></a> [cf\_domain](#input\_cf\_domain) | The CF domain to use for Grafana | `string` | n/a | yes |
 | <a name="input_cf_space_id"></a> [cf\_space\_id](#input\_cf\_space\_id) | The CF Space to deploy in | `string` | n/a | yes |
+| <a name="input_disable_proxy_auth"></a> [disable\_proxy\_auth](#input\_disable\_proxy\_auth) | Disables authentication on the proxy. Only enable this if you know what you are doing | `bool` | `false` | no |
 | <a name="input_disk"></a> [disk](#input\_disk) | The amount of Disk space to allocate for Grafana Tempo (MB) | `number` | `4980` | no |
 | <a name="input_enable_public_proxy"></a> [enable\_public\_proxy](#input\_enable\_public\_proxy) | Enables an authenticated public proxy endpoint | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment variables for Grafana Tempo | `map(any)` | `{}` | no |
