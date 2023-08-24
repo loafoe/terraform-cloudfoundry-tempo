@@ -27,6 +27,7 @@ Checkout the example in [examples/default](./examples/default)
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_proxy"></a> [proxy](#module\_proxy) | ./modules/proxy | n/a |
+| <a name="module_zipkin_proxy"></a> [zipkin\_proxy](#module\_zipkin\_proxy) | ./modules/proxy | n/a |
 
 ## Resources
 
@@ -56,7 +57,7 @@ Checkout the example in [examples/default](./examples/default)
 | <a name="input_network_policies"></a> [network\_policies](#input\_network\_policies) | The container-to-container network policies to create with Grafana as the source app | <pre>list(object({<br>    destination_app = string<br>    protocol        = string<br>    port            = string<br>  }))</pre> | `[]` | no |
 | <a name="input_s3_broker_settings"></a> [s3\_broker\_settings](#input\_s3\_broker\_settings) | The S3 service broker to use | <pre>object({<br>    service_broker = string<br>    service_plan   = string<br>  })</pre> | <pre>{<br>  "service_broker": "hsdp-s3",<br>  "service_plan": "s3_bucket"<br>}</pre> | no |
 | <a name="input_strategy"></a> [strategy](#input\_strategy) | The deployment strategy to use | `string` | `"rolling"` | no |
-| <a name="input_tempo_image"></a> [tempo\_image](#input\_tempo\_image) | Tempo Docker image to use | `string` | `"loafoe/cf-tempo:v0.6.3"` | no |
+| <a name="input_tempo_image"></a> [tempo\_image](#input\_tempo\_image) | Tempo Docker image to use | `string` | `"loafoe/cf-tempo:v0.7.0"` | no |
 
 ## Outputs
 
