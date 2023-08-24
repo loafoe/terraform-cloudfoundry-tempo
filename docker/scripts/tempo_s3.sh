@@ -47,6 +47,7 @@ ingester:
 compactor:
   compaction:
     compaction_window: 1h              # blocks in this time window will be compacted together
+    block_retention: 336h
 
 querier:
   # Greatly increase the amount of work each querier will attempt
