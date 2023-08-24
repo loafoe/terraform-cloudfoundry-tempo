@@ -78,10 +78,26 @@ module "proxy" {
   count  = var.enable_public_proxy ? 1 : 0
   source = "./modules/proxy"
 
+  ports = ["3100"]
 
   tempo_app_id            = cloudfoundry_app.tempo.id
   tempo_internal_endpoint = cloudfoundry_route.tempo_internal.endpoint
   name_postfix            = local.postfix
+  cf_domain               = var.cf_domain
+  cf_space_id             = var.cf_space_id
+  disable_auth            = var.disable_proxy_auth
+}
+
+module "zipkin_proxy" {
+  source = "./modules/proxy"
+
+  ports = ["9411"]
+
+  upstream_url = "http://${cloudfoundry_route.tempo_internal.endpoint}:9411"
+
+  tempo_app_id            = cloudfoundry_app.tempo.id
+  tempo_internal_endpoint = cloudfoundry_route.tempo_internal.endpoint
+  name_postfix            = "${local.postfix}-zipkin"
   cf_domain               = var.cf_domain
   cf_space_id             = var.cf_space_id
   disable_auth            = var.disable_proxy_auth

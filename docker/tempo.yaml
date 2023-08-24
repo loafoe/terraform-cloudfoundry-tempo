@@ -12,6 +12,8 @@ distributor:
         thrift_binary:
         thrift_compact:
     zipkin:
+      protocols:
+        http:
     otlp:
       protocols:
         http:

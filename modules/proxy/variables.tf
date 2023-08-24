@@ -6,6 +6,17 @@ variable "tempo_internal_endpoint" {
   type = string
 }
 
+variable "upstream_url" {
+  type        = string
+  description = "The (internal) upstream URL to proxy to"
+  default     = ""
+}
+
+variable "ports" {
+  type        = list(string)
+  description = "The list of ports to open up"
+  default     = ["3100"]
+}
 
 variable "cf_domain" {
   type        = string

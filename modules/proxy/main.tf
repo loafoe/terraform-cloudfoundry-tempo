@@ -1,3 +1,7 @@
+locals {
+  upstream_url = var.upstream_url == "" ? "http://${var.tempo_internal_endpoint}:3100" : var.upstream_url
+}
+
 resource "random_password" "proxy_password" {
   length  = 32
   special = false
@@ -26,7 +30,7 @@ resource "cloudfoundry_app" "tempo_proxy" {
 
   environment = merge({
     CADDYFILE_BASE64 = base64encode(templatefile("${path.module}/templates/Caddyfile", {
-      upstream_url = "http://${var.tempo_internal_endpoint}:3100"
+      upstream_url = local.upstream_url
       username     = "tempo"
       password     = base64encode(htpasswd_password.hash.bcrypt)
       enable_auth  = !var.disable_auth
@@ -50,10 +54,16 @@ resource "cloudfoundry_route" "tempo_proxy" {
 
 resource "cloudfoundry_network_policy" "tempo_proxy" {
 
-  policy {
-    source_app      = cloudfoundry_app.tempo_proxy.id
-    destination_app = var.tempo_app_id
-    protocol        = "tcp"
-    port            = "3100"
+  dynamic "policy" {
+    for_each = {
+      for i, p in var.ports : "${i}" => p
+    }
+
+    content {
+      source_app      = cloudfoundry_app.tempo_proxy.id
+      destination_app = var.tempo_app_id
+      protocol        = "tcp"
+      port            = policy.value
+    }
   }
 }

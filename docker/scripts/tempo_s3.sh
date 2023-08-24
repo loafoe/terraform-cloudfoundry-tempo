@@ -47,9 +47,6 @@ ingester:
 compactor:
   compaction:
     compaction_window: 1h              # blocks in this time window will be compacted together
-    max_block_bytes: 100_000_000        # maximum size of compacted blocks
-    block_retention: 1h
-    compacted_block_retention: 10m
 
 querier:
   # Greatly increase the amount of work each querier will attempt
