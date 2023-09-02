@@ -1,4 +1,4 @@
-FROM grafana/tempo:2.2.1 AS tempo
+FROM grafana/tempo:2.2.2 AS tempo
 COPY tempo.yaml /etc/tempo.yaml
 EXPOSE 3100
 
