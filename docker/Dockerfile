@@ -3,7 +3,7 @@ COPY tempo.yaml /etc/tempo.yaml
 EXPOSE 3100
 
 ## Build tempo
-FROM alpine:3.18.4 AS tempo2
+FROM alpine:3.19.1 AS tempo2
 ARG tempo_version
 ENV TEMPO_VERSION ${tempo_version}
 RUN apk add --no-cache curl
@@ -12,7 +12,7 @@ RUN curl -L -Os https://github.com/grafana/tempo/releases/download/v${TEMPO_VERS
  && tar zxvf tempo_${TEMPO_VERSION}_linux_amd64.tar.gz --strip 1
 
 ## Build final image
-FROM alpine:3.18.4
+FROM alpine:3.19.1
 LABEL maintainer="andy.lo-a-foe@philips.com"
 RUN apk add --no-cache supervisor jq curl && rm -rf /tmp/* /var/cache/apk/*
 RUN apk add --no-cache yq --repository http://dl-cdn.alpinelinux.org/alpine/edge/community
